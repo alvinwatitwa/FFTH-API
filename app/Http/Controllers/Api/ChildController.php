@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\Child as ChildResource;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChildController extends BaseController
@@ -18,7 +19,7 @@ class ChildController extends BaseController
      */
     public function index()
     {
-        return $this->sendResponse(ChildResource::collection(Child::all()), 'Data fetched successfully');
+        return $this->sendResponse(ChildResource::collection(Child::with('household')->get()), 'Data fetched successfully');
     }
 
     /**
@@ -119,12 +120,9 @@ class ChildController extends BaseController
     }
 
     /**
-     *
+     *Update all data
      */
     private function storePUTData($request, $child){
-
-        $child_image_name = "";
-
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -143,33 +141,19 @@ class ChildController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        if($request->input('photo') !== null || !empty($request->input('photo'))){
-
-            if($request->hasfile('photo')){
-               $file = $request->file('photo');
-               $child_image_name = time().$file->getClientOriginalName();
-               $file->move(storage_path().'/app/public/images/', $child_image_name);
-            }
-
-        }else{
-            $child_image_name = null;
-        }
-
         $child->first_name = $request->input('first_name');
         $child->last_name = $request->input('last_name');
         $child->Country = $request->input('Country');
         $child->gender = $request->input('gender');
         $child->date_of_birth = $request->input('date_of_birth');
-        $child->photo = $request->input('photo');
         $child->hobbies = $request->input('hobbies');
         $child->history = $request->input('history');
         $child->support_amount = $request->input('support_amount');
         $child->frequency = $request->input('frequency');
+        $child->household_id = $request->input('household_id');
 
-        if($child_image_name !== null){
-
-            $child->photo = 'images/' . $child_image_name;
-
+        if( $request->file('photo')){
+            $child->photo = Storage::disk('public')->putFile('images', $request->file('photo'));
         }
 
         if ($child->save()) {
@@ -177,6 +161,13 @@ class ChildController extends BaseController
         } else {
             return false;
         }
+    }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function getFirstFive()
+    {
+        return $this->sendResponse(ChildResource::collection(Child::with('household')->limit(5)->get()), 'Data fetched successfully');
     }
 }

@@ -30,6 +30,7 @@ Route::group(['middleware' => ['json.response']], function () {
         });
 
         Route::post('register', 'AuthController@register');
+        Route::get('get-random-children', 'ChildController@getFirstFive');
         Route::post('login', 'AuthController@login');
 
     });
