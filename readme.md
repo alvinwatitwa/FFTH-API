@@ -2,16 +2,23 @@
 
 Done using Laravel framework and php 7.2
 
+## Database ERD
+
+![img](https://github.com/alvinwatitwa/FFTH-API/blob/develop/screenshots/ffth-erd.png)
+
+
+
+
 ## Getting Started
 
 Clone the project by running
 
 ```
-git clone https://github.com/ngarawakimani/ffth_api.git
+git clone https://github.com/alvinwatitwa/FFTH-API.git
 ```
 ### Prerequisites
 
-create a mysql database 
+create a mysql database
 
 run the following commands
 
@@ -40,7 +47,7 @@ php artisan serve
 
 ```
 
-## Routes  
+## Routes
 ```
 routes/api.php
 ```
