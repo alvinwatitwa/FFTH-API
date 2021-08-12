@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
+use App\Household;
 use Tests\TestCase;
 use App\User;
 use App\Child;
@@ -46,6 +47,8 @@ class ChildControllerTest extends TestCase
             factory(User::class)->create()
         );
 
+        $household =  factory(Household::class)->create();
+
         //When
         Storage::fake('images');
 
@@ -62,6 +65,7 @@ class ChildControllerTest extends TestCase
             'history' => 'This is my short history',
             'support_amount' => 50.00,
             'frequency' => 'Monthly',
+            ''
         ]);
 
         //Then
