@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
+use App\Household;
 use Tests\TestCase;
 use App\User;
 use App\Child;
@@ -46,14 +47,16 @@ class ChildControllerTest extends TestCase
             factory(User::class)->create()
         );
 
+        $household =  factory(Household::class)->create();
+
         //When
         Storage::fake('images');
 
         $file = UploadedFile::fake()->image('photo.jpg');
 
         $response = $this->post( '/api/v1/children', [
-            'first_name' => 'Dancan',
-            'last_name' => 'Kimani',
+            'first_name' => 'Alvin',
+            'last_name' => 'Watitwa',
             'Country' => 'Kenya',
             'gender' => 'Boy',
             'date_of_birth' => '2000-06-06',
@@ -62,6 +65,7 @@ class ChildControllerTest extends TestCase
             'history' => 'This is my short history',
             'support_amount' => 50.00,
             'frequency' => 'Monthly',
+            'household_id' => $household->id
         ]);
 
         //Then
@@ -69,7 +73,7 @@ class ChildControllerTest extends TestCase
         Storage::disk('images')->assertExists($file->hashName());
 
         $this->assertDatabaseHas('children', [
-            'first_name' => 'Dancan'
+            'first_name' => 'Alvin'
         ]);
 
         $response->assertStatus(200)->assertJson([
