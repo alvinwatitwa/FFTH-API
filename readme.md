@@ -1,6 +1,6 @@
 # FFTH API
 
-Done using Laravel framework and php 7.2
+Done using Laravel framework and php 
 
 
 ## Database ERD
@@ -57,7 +57,7 @@ https://documenter.getpostman.com/view/5053664/Tzz5uyh9
 
 ## Testing
 
-Please run the following command for unit testing
+Please run the following command for testing
 
 ```
 vendor/bin/phpunit  tests\Feature\Http\Controllers\Api\ChildControllerTest.php
