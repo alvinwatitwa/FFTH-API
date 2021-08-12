@@ -2,11 +2,12 @@
 
 Done using Laravel framework and php 7.2
 
+
 ## Database ERD
 
-![img](https://github.com/alvinwatitwa/FFTH-API/blob/develop/screenshots/ffth-erd.png)
+The below is a diagram illustrating the db schema and entity relations
 
-
+![img](https://github.com/alvinwatitwa/FFTH-API/blob/fdee006146b151ea8b727fc7b96bed3d5950da66/screenshots/ffth-erd-resized.png)
 
 
 ## Getting Started
@@ -18,15 +19,15 @@ git clone https://github.com/alvinwatitwa/FFTH-API.git
 ```
 ### Prerequisites
 
-create a mysql database
+
 
 run the following commands
 
 ```
 cp .env.example .env
-php artisan key:generate
 
 ```
+create a mysql database
 
 set the name of your database in your env file
 
@@ -35,16 +36,15 @@ then run the following commands
 ```
 composer install
 php artisan migrate
+php artisan key:generate
 php artisan passport:install
 php artisan db:seed
-
 ```
 
 then start the development server by running
 
 ```
 php artisan serve
-
 ```
 
 ## Routes
@@ -53,16 +53,7 @@ routes/api.php
 ```
 
 ## Authorisation
-![img](https://github.com/ngarawakimani/ffth_api/blob/develop/screenshots/2019-07-08_0105.png)
-
-## Make a GET Request
-![img](https://github.com/ngarawakimani/ffth_api/blob/develop/screenshots/2019-07-08_0106.png)
-
-## Example Successfull Request
-![img](https://github.com/ngarawakimani/ffth_api/blob/develop/screenshots/2019-07-08_0108.png)
-
-## Example Unsuccessfull Request
-![img](https://github.com/ngarawakimani/ffth_api/blob/develop/screenshots/2019-07-08_0107.png)
+![img](https://github.com/alvinwatitwa/FFTH-API/blob/fdee006146b151ea8b727fc7b96bed3d5950da66/screenshots/ffth-auth-headers.png)
 
 ## Testing
 
