@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Child;
+use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\Child as ChildResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 class ChildController extends BaseController
 {
+    use UploadTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -152,8 +156,20 @@ class ChildController extends BaseController
         $child->frequency = $request->input('frequency');
         $child->household_id = $request->input('household_id');
 
-        if( $request->file('photo')){
-            $child->photo = Storage::disk('public')->putFile('images', $request->file('photo'));
+        // Check if a profile image has been uploaded
+        if ($request->has('photo')) {
+            // Get image file
+            $image = $request->file('photo');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($request->input('first_name')).'_'.time();
+            // Define folder path
+            $folder = '/uploads/images/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $child->photo = $filePath;
         }
 
         if ($child->save()) {
