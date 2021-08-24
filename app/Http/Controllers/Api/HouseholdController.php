@@ -21,7 +21,7 @@ class HouseholdController extends BaseController
 */
     public function index()
     {
-        return $this->sendResponse(HouseholdResource::collection(Household::all()), 'Data fetched successfully');
+        return $this->sendResponse(HouseholdResource::collection(Household::with('members')->get()), 'Data fetched successfully');
     }
 
 
@@ -62,7 +62,11 @@ class HouseholdController extends BaseController
      */
     public function update(Request $request, Household $household)
     {
-        return $this->storePUTData($request,$household);
+        if ($this->storePUTData($request, $household)) {
+            return $this->sendResponse(new HouseholdResource($household), 'Household updated successfully.');
+        } else {
+            return $this->sendError('Database Error.', ['Unable to save data']);
+        }
     }
 
 

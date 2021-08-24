@@ -7,6 +7,8 @@ use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\Child as ChildResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,7 +21,7 @@ class ChildController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -29,7 +31,7 @@ class ChildController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -40,7 +42,7 @@ class ChildController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -58,7 +60,7 @@ class ChildController extends BaseController
      * Display the specified resource.
      *
      * @param  \App\Child  $child
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -78,7 +80,7 @@ class ChildController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  \App\Child  $child
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Child $child)
     {
@@ -86,20 +88,16 @@ class ChildController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Child  $child
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Child $child
+     * @return Response
      */
     public function update(Request $request, Child $child)
     {
-        //
-
         if ($this->storePUTData($request,$child)) {
             return $this->sendResponse(new ChildResource($child), 'Child Updated successfully.');
         } else {
-            return $this->sendError('Database Error.', ['Unnable to save data']);
+            return $this->sendError('Database Error.', ['Unable to save data']);
         }
     }
 
@@ -107,7 +105,7 @@ class ChildController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param  \App\Child  $child
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Child $child)
     {
@@ -142,6 +140,8 @@ class ChildController extends BaseController
         ]);
 
         if ($validator->fails()) {
+            Log::info($request->all());
+            Log::info($validator->errors());
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
@@ -180,7 +180,7 @@ class ChildController extends BaseController
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function getFirstFive()
     {

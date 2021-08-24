@@ -12,7 +12,7 @@ class Household extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
@@ -20,6 +20,7 @@ class Household extends JsonResource
             'code' => $this->code,
             'country' => $this->country,
             'phone_number' => $this->phone_number,
+            'members' => HouseholdMember::collection($this->whenLoaded('members')),
         ];
     }
 }
