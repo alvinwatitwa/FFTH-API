@@ -20,9 +20,9 @@ Route::group(['middleware' => ['json.response']], function () {
         Route::middleware('auth:api')->group(function () {
 
             Route::resource('/households', 'HouseholdController');
+            Route::resource('/household-members', 'MembersController');
             Route::resource('/children', 'ChildController');
             Route::resource('/sponsorship', 'SponsorshipController');
-            Route::resource('/crisis', 'CrisisController');
             Route::get('/stats', 'StatsController@index');
 
             Route::post('logout', 'AuthController@logout');
